@@ -65,5 +65,5 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
 end
-
+gem 'tzinfo-data'
 gem 'httparty'
