@@ -1,11 +1,49 @@
 <h2>List of ratings</h2>
 
-<p>
-  Number of ratings <%= @ratings.count %>
-</p>
+<% cache 'ratings_cache', :expires_in => 10.minutes do %>
 
+<p>Total of <%= pluralize(@ratings.count, 'rating') %></p>
+
+<h3>Top beers</h3>
+<%= render 'top', things: @top_beers %>
+
+<h3>Top breweries</h3>
+<%= render 'top', things: @top_breweries %>
+
+<h3>Top styles</h3>
+<%= render 'top', things: @top_styles %>
+
+<h3>Most active users</h3>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Favorite beer</td>
+            <td>Favorite brewery</td>
+            <td>Favorite style</td>
+            <td>Ratings</td>
+        </tr>
+    </thead>
+    <tbody>
+        <% @active_users.each do |user| %>
+            <tr>
+                <td><%= link_to user.username, user %></td>
+                <td><%= link_to user.favorite_beer, user.favorite_beer %></td>
+                <td><%= link_to user.favorite_brewery, user.favorite_brewery %></td>
+                <td><%= link_to user.favorite_style, user.favorite_style %></td>
+                <td><%= user.ratings.count %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<h3>Recent ratings</h3>
 <ul>
-  <% @ratings.each do |rating| %>
-    <li> <%= rating %> <%= link_to rating.user.username, rating.user %></li>
-  <% end %>
+    <% @recent_ratings.each do |r| %>
+        <li><%= r %></li>
+    <% end %>
 </ul>
+
+<% end %>
+
+<p><%= link_to 'New rating', new_rating_path, class: 'btn' %></p>
